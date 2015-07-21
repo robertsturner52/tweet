@@ -1,0 +1,11 @@
+{{ define "login"}}
+<form class="login-form" action="/login" method="post">
+  <label>
+    Username: <input type="text" name="username" value="{[.Profile.Username]}">
+  </label>
+  {{ if .Error }}
+    <div class="error">{{ .Error }}</div>
+  {{ end }}
+  <input type="submit">
+</form>
+{{ end }}

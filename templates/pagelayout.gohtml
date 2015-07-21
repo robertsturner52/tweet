@@ -1,5 +1,4 @@
-{{define "pagelayout"}}
-<!DOCTYPE html>
+{{ define "pagelayout" }}<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -21,8 +20,9 @@
     </div>
   </header>
   <main>
-    {{ .Tweets }}
+    {{ .Body }}
   </main>
+  {{ template "tweet-overlay" }}
   <script src="/assets/js/script.js"></script>
 </body>
 </html>

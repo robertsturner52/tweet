@@ -1,0 +1,7 @@
+{{ define "section" }}
+<section class="tweets">
+  {{ range .Tweets }}
+    {{template "tweet" . }}
+  {{ end }}
+</section>
+{{end}}

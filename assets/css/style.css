@@ -1,16 +1,47 @@
 * {
     box-sizing: border-box;
 }
+header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.options {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+a {
+
+}
+.button {
+
+}
+.login-form {
+
+}
+.error {
+
+}
+.tweet-overlay {
+
+}
+#new-tweet-form {
+
+}
+#new-tweet-text {
+
+}
 main {
     display: flex;
     flex-direction: row;
     justify-content: center;
     margin: 10px;
 }
-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.tweets {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .tweet {
     border: 1px solid #000;
@@ -21,5 +52,11 @@ h1 {
 
 }
 h2 {
+
+}
+h3 {
+
+}
+p {
 
 }

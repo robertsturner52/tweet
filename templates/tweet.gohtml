@@ -1,0 +1,7 @@
+{{ define "tweet" }}
+<div class="tweet">
+  <div class="time">{{ humanize_time .Time }}</div>
+  <h3><a href="/{{ .Username }}">@{{ .Username }}</a></h3>
+  <p>{{ .Text }}</p>
+</div>
+{{ end }}
