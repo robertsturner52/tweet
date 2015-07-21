@@ -1,0 +1,29 @@
+{{define "pagelayout"}}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Twitter Clone</title>
+  <link rel="stylesheet" href="/assets/css/reset.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <header>
+    <h1><a href="/">Twitter Clone</a></h1>
+    <div class="options">
+      {{ if .LoggedIn }}
+        <a href="/profile" class="button" id="profile-button">Profile</a>
+        <a href="/tweet" class="button" id="tweet-button">Tweet</a>
+        <a href="/logout" class="button" id="logout-button">Log out</a>
+      {{ else }}
+        <a href="/login" class="button" id="login-button">Log in</a>
+      {{ end }}
+    </div>
+  </header>
+  <main>
+    {{ .Tweets }}
+  </main>
+  <script src="/assets/js/script.js"></script>
+</body>
+</html>
+{{ end }}

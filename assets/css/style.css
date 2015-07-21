@@ -1,0 +1,25 @@
+* {
+    box-sizing: border-box;
+}
+main {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 10px;
+}
+section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.tweet {
+    border: 1px solid #000;
+    max-width: 500px;
+    border-radius: 10px;
+}
+h1 {
+
+}
+h2 {
+
+}
