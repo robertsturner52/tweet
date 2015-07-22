@@ -6,7 +6,7 @@ header {
   flex-direction: row;
   justify-content: space-between;
 }
-.options {
+.nav {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;

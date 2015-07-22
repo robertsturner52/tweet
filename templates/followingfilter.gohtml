@@ -1,0 +1,8 @@
+{{define "followingfilter"}}
+<h2>Following:</h2>
+<div class="tweets">
+  {{ range .Tweets }}
+    {{ template "tweet" . }}
+  {{ end }}
+</div>
+{{ end }}

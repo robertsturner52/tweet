@@ -1,0 +1,11 @@
+{{define "usernamefilter"}}
+<h2>@{{ .Profile.Username }}</h2>
+<div class="nav">
+    <button class="button" id="follow-button" data-username="{{.Profile.Username}}">Follow</button>
+</div>
+<div class="tweets">
+  {{ range .Tweets }}
+    {{ template "tweet" . }}
+  {{ end }}
+</div>
+{{ end }}
