@@ -1,16 +1,32 @@
+package main
+
 import (
 	"fmt"
+	"time"
 
 	"golang.org/x/net/context"
 	"google.golang.org/appengine/datastore"
 )
 
-func createProfile() {
-
+type Profile struct {
+	Username string
+	Email    string
 }
 
-func getProfileByEmail() {
+func createProfile(ctx context.Context, profile *Profile) error {
+	key := datastore.NewKey(ctx, "Profile", profile.Email, 0, nil)
+	_, err := datastore.Put(ctx, key, profile)
+	return err
+}
 
+func getProfileByEmail(ctx context.Context, email string) (*Profile, error) {
+	key := datastore.NewKey(ctx, "Profile", email, 0, nil)
+	var profile Profile
+	err := datastore.Get(ctx, key, &profile)
+	if err != nil {
+		return nil, err
+	}
+	return &profile, nil
 }
 
 func getProfileByUsername(ctx context.Context, username string) (*Profile, error) {
@@ -26,16 +42,38 @@ func getProfileByUsername(ctx context.Context, username string) (*Profile, error
 	return &profiles[0], nil
 }
 
-func waitForProfile() {
-
+func waitForProfile(ctx context.Context, username string) error {
+	deadline := time.Now().Add(time.Second * 10)
+	for time.Now().Before(deadline) {
+		_, err := getProfileByUsername(ctx, username)
+		if err == nil {
+			return nil
+		}
+		time.Sleep(time.Second * 1)
+	}
+	return nil
 }
 
-func createTweet() {
-
+type Tweet struct {
+	ID       int64 `datastore:"-"`
+	Username string
+	Text     string
+	Time     time.Time
 }
 
-func getTweets() {
+func createTweet(ctx context.Context, email string, tweet *Tweet) error {
+	profileKey := datastore.NewKey(ctx, "Profile", email, 0, nil)
+	key := datastore.NewIncompleteKey(ctx, "Tweet", profileKey)
+	key, err := datastore.Put(ctx, key, tweet)
+	if err != nil {
+		return err
+	}
+	tweet.ID = key.IntID()
+	return nil
+}
 
+func getTweets(ctx context.Context) ([]*Tweet, error) {
+	return getUserTweets(ctx, "")
 }
 
 func getUserTweets(ctx context.Context, username string) ([]*Tweet, error) {

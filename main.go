@@ -1,11 +1,13 @@
 package main
 
 import (
+	"encoding/json"
 	"net/http"
-	"os/user"
 	"strings"
+	"time"
 
 	"google.golang.org/appengine"
+	"google.golang.org/appengine/user"
 )
 
 func init() {
@@ -16,8 +18,19 @@ func init() {
 	http.HandleFunc("/api/", handleAPI)
 }
 
-func handleAPI() {
-
+func handleAPI(res http.ResponseWriter, req *http.Request) {
+	// switch on the api method
+	switch strings.SplitN(req.URL.Path, "/", 3)[2] {
+	case "tweets":
+		switch req.Method {
+		case "POST":
+			handleUserTweet(res, req)
+		default:
+			http.Error(res, "method not allowed", 405)
+		}
+	default:
+		http.NotFound(res, req)
+	}
 }
 
 func handleIndex(res http.ResponseWriter, req *http.Request) {
@@ -43,10 +56,7 @@ func handleIndex(res http.ResponseWriter, req *http.Request) {
 func handleLogin(res http.ResponseWriter, req *http.Request) {
 	ctx := appengine.NewContext(req)
 	u := user.Current(ctx)
-
-	// look for the user's profile
 	profile, err := getProfileByEmail(ctx, u.Email)
-	// if it exists redirect
 	if err == nil && profile.Username != "" {
 		http.SetCookie(res, &http.Cookie{Name: "logged_in", Value: "true"})
 		http.Redirect(res, req, "/"+profile.Username, 302)
@@ -117,4 +127,30 @@ func handleUserProfile(res http.ResponseWriter, req *http.Request) {
 		Tweets:  tweets,
 	}
 	renderTemplate(res, req, "usernamefilter", model)
+}
+
+func handleUserTweet(res http.ResponseWriter, req *http.Request) {
+	ctx := appengine.NewContext(req)
+	u := user.Current(ctx)
+	profile, err := getProfileByEmail(ctx, u.Email)
+	if err != nil {
+		http.Error(res, err.Error(), 500)
+		return
+	}
+	var tweet Tweet
+	err = json.NewDecoder(req.Body).Decode(&tweet)
+	if err != nil {
+		http.Error(res, err.Error(), 500)
+		return
+	}
+	tweet.Time = time.Now()
+	tweet.Username = profile.Username
+
+	// create the tweet
+	err = createTweet(ctx, profile.Email, &tweet)
+	if err != nil {
+		http.Error(res, err.Error(), 500)
+		return
+	}
+	json.NewEncoder(res).Encode(tweet)
 }

@@ -4,6 +4,8 @@ runtime: go
 api_version: go1
 
 handlers:
-- url: /.*
+- url: /login
   script: _go_app
   login: required
+- url: /.*
+  script: _go_app

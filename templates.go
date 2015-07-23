@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/dustin/go-humanize"
+
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/log"
 
@@ -40,7 +42,7 @@ func renderTemplate(res http.ResponseWriter, req *http.Request, name string, dat
 		if cookie, err := req.Cookie("logged_in"); err == nil {
 			model.LoggedIn = cookie.Value == "true"
 		}
-		err = tpl.ExecuteTemplate(res, "layout", model)
+		err = tpl.ExecuteTemplate(res, "pagelayout", model)
 	}
 	if err != nil {
 		http.Error(res, err.Error(), 500)
